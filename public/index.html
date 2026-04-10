@@ -7,7 +7,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="AeroTrack">
-<meta name="description" content="Real-time flight tracker powered by OpenSky Network">
 <link rel="manifest" href="/manifest.json">
 <title>AeroTrack ✈</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -20,26 +19,27 @@
 
 <div class="app">
 
-  <!-- ── Header ─────────────────────────────────────── -->
+  <!-- ── Cabecera ──────────────────────────────────────────── -->
   <header class="header">
     <div class="logo">
       <div class="logo-icon">✈</div>
       <div class="logo-text">AeroTrack</div>
     </div>
+    <div id="liveCounter" class="live-counter" style="display:none"></div>
     <div class="header-right">
       <div class="api-badge" id="apiBadge">—</div>
-      <button class="icon-btn" onclick="App.refresh()" title="Refrescar">↺</button>
+      <button class="icon-btn" onclick="App.refresh()" title="Actualizar">↺</button>
     </div>
   </header>
 
-  <!-- ── Search ─────────────────────────────────────── -->
+  <!-- ── Buscador ──────────────────────────────────────────── -->
   <section class="search-section">
     <div class="search-bar" id="searchBar">
       <span class="search-icon">✦</span>
       <input
         class="search-input"
         id="searchInput"
-        placeholder="Vuelo: IBE6250, VLG8103…"
+        placeholder="Buscar vuelo: IBE6250, RYR1234…"
         maxlength="10"
         autocomplete="off"
         autocorrect="off"
@@ -47,13 +47,13 @@
       >
       <button class="search-btn" id="searchBtn" onclick="App.search()">Buscar</button>
     </div>
-    <div class="search-hint">Usa el código ICAO: IBE (Iberia) · VLG (Vueling) · RYR (Ryanair)</div>
+    <div class="search-hint">IBE = Iberia · VLG = Vueling · RYR = Ryanair · EZY = easyJet</div>
   </section>
 
-  <!-- ── Search Result ──────────────────────────────── -->
+  <!-- ── Resultado búsqueda ─────────────────────────────────── -->
   <div class="result-card" id="resultCard" style="display:none"></div>
 
-  <!-- ── Airport Quick Select ───────────────────────── -->
+  <!-- ── Aeropuertos ───────────────────────────────────────── -->
   <section class="airport-section">
     <div class="section-header">
       <div class="section-title">Aeropuertos</div>
@@ -62,32 +62,48 @@
     <div class="airport-scroll" id="airportScroll"></div>
   </section>
 
-  <!-- ── Tabs ───────────────────────────────────────── -->
+  <!-- ── Tabs ──────────────────────────────────────────────── -->
   <div class="tabs">
     <button class="tab active" data-tab="departures" onclick="App.switchTab(this,'departures')">✈ Salidas</button>
-    <button class="tab" data-tab="arrivals" onclick="App.switchTab(this,'arrivals')">⬇ Llegadas</button>
-    <button class="tab" data-tab="live" onclick="App.switchTab(this,'live')">🌍 Vuelos vivos</button>
+    <button class="tab"        data-tab="arrivals"   onclick="App.switchTab(this,'arrivals')">⬇ Llegadas</button>
+    <button class="tab"        data-tab="live"       onclick="App.switchTab(this,'live')">🌍 En vivo</button>
   </div>
 
-  <!-- ── Flight List ────────────────────────────────── -->
-  <main class="flight-list-section pb-nav" id="mainContent">
-    <div class="section-title" id="listTitle">Selecciona un aeropuerto</div>
+  <!-- ── Tablero de vuelos ─────────────────────────────────── -->
+  <main class="board-section pb-nav">
+
+    <!-- Cabecera del tablero (visible cuando hay datos) -->
+    <div class="board-thead" id="boardHead" style="display:none">
+      <span class="bth-flight">VUELO</span>
+      <span class="bth-route">RUTA &nbsp;<span id="boardCount" class="board-count"></span></span>
+      <span class="bth-time">HORA</span>
+      <span class="bth-status">ESTADO</span>
+    </div>
+
+    <!-- Título + badge de refresco -->
+    <div class="list-header">
+      <div class="section-title" id="listTitle">Selecciona un aeropuerto</div>
+      <div class="refresh-badge" id="refreshBadge"></div>
+    </div>
+
+    <!-- Lista de filas -->
     <div id="flightList"></div>
+
   </main>
 
-</div>
+</div><!-- /.app -->
 
-<!-- ── Detail Modal ───────────────────────────────────── -->
+<!-- ── Modal detalle ─────────────────────────────────────────── -->
 <div class="modal-overlay" id="modalOverlay" onclick="App.closeModal()"></div>
 <div class="modal" id="modal">
   <div class="modal-drag-handle"></div>
   <div id="modalBody"></div>
 </div>
 
-<!-- ── Toast ──────────────────────────────────────────── -->
+<!-- ── Toast ─────────────────────────────────────────────────── -->
 <div class="toast" id="toast"></div>
 
-<!-- ── Bottom Nav ─────────────────────────────────────── -->
+<!-- ── Navegación inferior ───────────────────────────────────── -->
 <nav class="bottom-nav">
   <button class="nav-item active" onclick="App.navTo('flights',this)">
     <span class="nav-icon">✈</span><span>Vuelos</span>

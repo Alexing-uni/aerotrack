@@ -5,6 +5,7 @@
 
 require('dotenv').config();
 
+const os         = require('os');
 const express    = require('express');
 const cors       = require('cors');
 const helmet     = require('helmet');
@@ -95,11 +96,25 @@ app.use((err, req, res, next) => {
   });
 });
 
+// ── Detect LAN IP ───────────────────────────────────────────
+function getLanIP() {
+  for (const ifaces of Object.values(os.networkInterfaces())) {
+    for (const iface of ifaces) {
+      if (iface.family === 'IPv4' && !iface.internal) return iface.address;
+    }
+  }
+  return null;
+}
+
 // ── Start ───────────────────────────────────────────────────
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   const hasCredentials = !!(process.env.OPENSKY_CLIENT_ID && process.env.OPENSKY_CLIENT_SECRET);
+  const lanIP = getLanIP();
   console.log(`\n✈  AeroTrack server running`);
-  console.log(`   URL:         http://localhost:${PORT}`);
+  console.log(`   Local:       http://localhost:${PORT}`);
+  if (lanIP) {
+    console.log(`   Red local:   http://${lanIP}:${PORT}   ← usa esta en el móvil`);
+  }
   console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`   OpenSky:     ${hasCredentials ? '🔐 Authenticated (4000 req/day)' : '👤 Anonymous (400 req/day)'}`);
   console.log(`   Cache TTL:   ${process.env.CACHE_TTL || 30}s\n`);

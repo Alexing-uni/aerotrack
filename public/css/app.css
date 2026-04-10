@@ -1,5 +1,5 @@
 /* ============================================================
-   AeroTrack — Stylesheet
+   AeroTrack — Stylesheet (tablero de aeropuerto)
    ============================================================ */
 
 :root {
@@ -18,32 +18,26 @@
   --text:      #e8eaf0;
   --text2:     #9aa0b0;
   --muted:     #5a6070;
-  --font-d:    'Syne', sans-serif;
-  --font-m:    'Space Mono', monospace;
+  --font-d:    'Syne', system-ui, sans-serif;
+  --font-m:    'Space Mono', 'Courier New', monospace;
   --radius:    18px;
   --radius-sm: 10px;
 }
 
-/* ── Reset ──────────────────────────────────────────────── */
+/* ── Reset ──────────────────────────────────────────────────── */
 *, *::before, *::after {
   margin: 0; padding: 0; box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
 }
-
 html { height: 100%; }
-
 body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-d);
-  min-height: 100dvh;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
+  background: var(--bg); color: var(--text);
+  font-family: var(--font-d); min-height: 100dvh;
+  overflow-x: hidden; -webkit-font-smoothing: antialiased;
 }
-
 button { font-family: var(--font-d); cursor: pointer; border: none; background: none; }
 
-/* ── Background Effects ──────────────────────────────────── */
+/* ── Fondo ──────────────────────────────────────────────────── */
 .bg-grid {
   position: fixed; inset: 0; z-index: 0; pointer-events: none;
   background-image:
@@ -57,25 +51,35 @@ button { font-family: var(--font-d); cursor: pointer; border: none; background: 
   background: radial-gradient(ellipse, rgba(0,212,255,0.07) 0%, transparent 70%);
 }
 
-/* ── Layout ─────────────────────────────────────────────── */
+/* ── Layout ─────────────────────────────────────────────────── */
 .app {
   position: relative; z-index: 1;
   max-width: 430px; margin: 0 auto; min-height: 100dvh;
 }
 
-/* ── Header ─────────────────────────────────────────────── */
+/* ── Cabecera ───────────────────────────────────────────────── */
 .header {
   padding: 52px 20px 12px;
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
 }
-.logo { display: flex; align-items: center; gap: 10px; }
+.logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 .logo-icon {
   width: 34px; height: 34px; border-radius: 9px; font-size: 17px;
   background: linear-gradient(135deg, var(--accent), var(--accent2));
   display: flex; align-items: center; justify-content: center;
 }
 .logo-text { font-size: 19px; font-weight: 800; letter-spacing: -.5px; }
-.header-right { display: flex; align-items: center; gap: 8px; }
+
+.live-counter {
+  font-family: var(--font-m); font-size: 10px; white-space: nowrap;
+  color: var(--accent); background: rgba(0,212,255,0.08);
+  border: 1px solid rgba(0,212,255,0.2);
+  border-radius: 20px; padding: 4px 10px;
+  flex: 1; text-align: center; min-width: 0;
+  overflow: hidden; text-overflow: ellipsis;
+}
+
+.header-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 .api-badge {
   font-size: 10px; font-weight: 700; letter-spacing: .5px;
   padding: 3px 8px; border-radius: 20px;
@@ -94,7 +98,7 @@ button { font-family: var(--font-d); cursor: pointer; border: none; background: 
 }
 .icon-btn:active { transform: scale(.9); }
 
-/* ── Search ─────────────────────────────────────────────── */
+/* ── Buscador ───────────────────────────────────────────────── */
 .search-section { padding: 8px 20px 4px; }
 .search-bar {
   display: flex; align-items: center; gap: 10px;
@@ -103,8 +107,7 @@ button { font-family: var(--font-d); cursor: pointer; border: none; background: 
   transition: border-color .25s, box-shadow .25s;
 }
 .search-bar:focus-within {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(0,212,255,0.1);
+  border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,212,255,0.1);
 }
 .search-icon { color: var(--accent); font-size: 14px; }
 .search-input {
@@ -126,7 +129,7 @@ button { font-family: var(--font-d); cursor: pointer; border: none; background: 
 .search-btn:disabled { opacity: .5; cursor: not-allowed; }
 .search-hint { font-size: 10px; color: var(--muted); padding: 6px 14px 0; }
 
-/* ── Result Card ──────────────────────────────────────────── */
+/* ── Resultado búsqueda ─────────────────────────────────────── */
 .result-card {
   margin: 12px 20px;
   background: linear-gradient(135deg, rgba(0,212,255,0.06), rgba(124,58,237,0.06));
@@ -139,15 +142,13 @@ button { font-family: var(--font-d); cursor: pointer; border: none; background: 
   text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px;
   display: flex; align-items: center; gap: 6px;
 }
-.result-card .flight-num { font-family: var(--font-m); font-size: 22px; font-weight: 700; }
-.result-card .status-row { display: flex; align-items: center; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
-.result-card .detail-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px;
-}
+.result-card .flight-callsign { font-family: var(--font-m); font-size: 22px; font-weight: 700; }
+.result-card .status-row { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+.result-card .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
 .result-card .detail-item .label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; }
 .result-card .detail-item .value { font-family: var(--font-m); font-size: 14px; font-weight: 700; margin-top: 2px; }
 
-/* ── Airport Selector ────────────────────────────────────── */
+/* ── Aeropuertos ────────────────────────────────────────────── */
 .airport-section { padding: 16px 0 4px; }
 .section-header {
   display: flex; align-items: center; justify-content: space-between;
@@ -157,14 +158,8 @@ button { font-family: var(--font-d); cursor: pointer; border: none; background: 
   font-size: 11px; font-weight: 700;
   text-transform: uppercase; letter-spacing: 2px; color: var(--muted);
 }
-.live-pill {
-  display: flex; align-items: center; gap: 5px;
-  font-size: 10px; font-weight: 700; color: var(--green);
-}
-.live-dot {
-  width: 6px; height: 6px; background: var(--green);
-  border-radius: 50%; animation: pulse 1.5s infinite;
-}
+.live-pill { display: flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 700; color: var(--green); }
+.live-dot  { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 1.5s infinite; }
 @keyframes pulse {
   0%,100% { opacity: 1; transform: scale(1); }
   50%      { opacity: .5; transform: scale(.8); }
@@ -172,8 +167,7 @@ button { font-family: var(--font-d); cursor: pointer; border: none; background: 
 
 .airport-scroll {
   display: flex; gap: 8px; padding: 0 20px;
-  overflow-x: auto; scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
+  overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
 }
 .airport-scroll::-webkit-scrollbar { display: none; }
 
@@ -181,23 +175,15 @@ button { font-family: var(--font-d); cursor: pointer; border: none; background: 
   flex-shrink: 0; display: flex; flex-direction: column; align-items: center;
   gap: 3px; padding: 10px 14px;
   background: var(--surface2); border: 1px solid var(--border);
-  border-radius: 12px; cursor: pointer; transition: all .2s;
-  min-width: 72px;
+  border-radius: 12px; cursor: pointer; transition: all .2s; min-width: 72px;
 }
 .airport-chip:active { transform: scale(.95); }
-.airport-chip.active {
-  background: rgba(0,212,255,0.1);
-  border-color: var(--accent);
-}
-.airport-chip .code {
-  font-family: var(--font-m); font-size: 14px; font-weight: 700; color: var(--text);
-}
+.airport-chip.active { background: rgba(0,212,255,0.1); border-color: var(--accent); }
+.airport-chip .code { font-family: var(--font-m); font-size: 14px; font-weight: 700; color: var(--text); }
 .airport-chip .city { font-size: 9px; color: var(--muted); white-space: nowrap; }
 
-/* ── Tabs ────────────────────────────────────────────────── */
-.tabs {
-  display: flex; gap: 6px; padding: 12px 20px 8px;
-}
+/* ── Tabs ────────────────────────────────────────────────────── */
+.tabs { display: flex; gap: 6px; padding: 12px 20px 0; }
 .tab {
   flex: 1; padding: 9px 4px; border-radius: var(--radius-sm);
   font-size: 12px; font-weight: 600;
@@ -207,48 +193,108 @@ button { font-family: var(--font-d); cursor: pointer; border: none; background: 
 .tab:active { transform: scale(.97); }
 .tab.active { background: var(--accent); color: #000; border-color: var(--accent); }
 
-/* ── Flight List ─────────────────────────────────────────── */
-.flight-list-section { padding: 4px 20px; }
+/* ── Sección tablero ─────────────────────────────────────────── */
+.board-section { padding: 8px 0 0; }
 
-/* ── Flight Row Card ─────────────────────────────────────── */
-.flight-row {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); overflow: hidden;
-  margin-bottom: 10px; cursor: pointer; position: relative;
-  transition: border-color .2s, transform .15s;
+.list-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 20px 4px;
 }
-.flight-row::before {
-  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-  width: 3px; border-radius: var(--radius) 0 0 var(--radius);
+.refresh-badge {
+  font-family: var(--font-m); font-size: 10px;
+  color: var(--muted); background: var(--surface2);
+  border: 1px solid var(--border); border-radius: 20px;
+  padding: 3px 9px; min-width: 52px; text-align: center;
+  transition: color 0.3s, border-color 0.3s;
 }
-.flight-row.airborne::before  { background: var(--green); }
-.flight-row.on_ground::before { background: var(--muted); }
-.flight-row.unknown::before   { background: var(--border2); }
-.flight-row:active { transform: scale(.985); border-color: var(--border2); }
+.refresh-badge.soon { color: var(--accent); border-color: rgba(0,212,255,0.35); }
 
-.flight-row-inner { padding: 14px 16px; }
-.flight-row-top {
-  display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px;
+/* ── Cabecera de columnas del tablero ────────────────────────── */
+.board-thead {
+  display: grid;
+  grid-template-columns: 92px 1fr 46px 62px;
+  padding: 6px 20px 6px 24px;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border2);
+  background: var(--surface2);
 }
-.flight-callsign { font-family: var(--font-m); font-size: 18px; font-weight: 700; }
-.flight-country  { font-size: 11px; color: var(--muted); margin-top: 2px; }
-
-.flight-status-badge {
-  font-size: 9px; font-weight: 700; letter-spacing: .8px;
-  padding: 3px 8px; border-radius: 20px; text-transform: uppercase;
+.board-thead span {
+  font-size: 9px; font-weight: 700; letter-spacing: 1.5px;
+  color: var(--muted); text-transform: uppercase;
 }
-.flight-status-badge.airborne  { background: rgba(0,230,118,0.15); color: var(--green); }
-.flight-status-badge.on_ground { background: rgba(90,96,112,0.2); color: var(--muted); }
-
-.flight-row-stats {
-  display: flex; gap: 16px; flex-wrap: wrap;
+.bth-status { text-align: right; }
+.board-count {
+  font-size: 9px; color: var(--accent); font-weight: 700;
+  letter-spacing: 0; text-transform: none;
 }
-.stat-item { display: flex; flex-direction: column; gap: 2px; }
-.stat-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; }
-.stat-value { font-family: var(--font-m); font-size: 13px; font-weight: 700; }
-.stat-value.accent { color: var(--accent); }
 
-/* ── Modal ───────────────────────────────────────────────── */
+/* ── Fila del tablero ────────────────────────────────────────── */
+.brow {
+  display: grid;
+  grid-template-columns: 92px 1fr 46px 62px;
+  align-items: center;
+  padding: 12px 20px 12px 24px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background .15s;
+  position: relative;
+}
+.brow::before {
+  content: '';
+  position: absolute; left: 0; top: 10px; bottom: 10px;
+  width: 3px; border-radius: 0 2px 2px 0;
+}
+.brow:not(.gnd)::before { background: var(--green); }
+.brow.gnd::before        { background: var(--muted); }
+.brow:active { background: var(--surface2); }
+
+/* Columna 1: Vuelo + aerolínea */
+.bc1 { min-width: 0; }
+.bcs {
+  font-family: var(--font-m); font-size: 14px; font-weight: 700;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.bal {
+  font-size: 10px; color: var(--muted); margin-top: 2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* Columna 2: Ruta */
+.bc2 { min-width: 0; padding: 0 6px; }
+.brt {
+  font-size: 13px; font-weight: 600;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.barr { color: var(--accent); }
+.brc {
+  font-family: var(--font-m); font-size: 10px; color: var(--muted);
+  margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* Columna 3: Hora */
+.bc3 {
+  font-family: var(--font-m); font-size: 11px; font-weight: 700;
+  color: var(--text2); text-align: center;
+}
+
+/* Columna 4: Estado */
+.bc4 { text-align: right; }
+.bst {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 14px; line-height: 1;
+  padding: 4px 6px; border-radius: 8px;
+}
+.bst.ok  { background: rgba(0,230,118,.12); }
+.bst.gnd { background: rgba(90,96,112,.18); }
+
+/* Flash al refrescar datos */
+@keyframes fadeInFlight {
+  from { opacity: 0.4; transform: translateY(4px); }
+  to   { opacity: 1;   transform: translateY(0); }
+}
+#flightList.refreshed { animation: fadeInFlight 0.25s ease; }
+
+/* ── Modal ───────────────────────────────────────────────────── */
 .modal-overlay {
   position: fixed; inset: 0; z-index: 100;
   background: rgba(5,8,16,.88); backdrop-filter: blur(10px);
@@ -267,12 +313,10 @@ button { font-family: var(--font-d); cursor: pointer; border: none; background: 
   max-height: 90dvh; overflow-y: auto;
 }
 .modal.open { transform: translateX(-50%) translateY(0); }
-
 .modal-drag-handle {
   width: 40px; height: 4px; background: var(--border2);
   border-radius: 99px; margin: 12px auto 0;
 }
-
 .modal-header   { padding: 16px 20px 0; }
 .modal-close-row { display: flex; justify-content: flex-end; margin-bottom: 4px; }
 .modal-close {
@@ -281,14 +325,13 @@ button { font-family: var(--font-d); cursor: pointer; border: none; background: 
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; font-size: 14px; color: var(--muted);
 }
-
 .modal-callsign { font-family: var(--font-m); font-size: 28px; font-weight: 700; }
 .modal-sub      { font-size: 12px; color: var(--muted); margin-top: 4px; }
 
 .modal-map {
   margin: 16px 20px;
   background: var(--surface2); border: 1px solid var(--border);
-  border-radius: 14px; height: 160px; position: relative; overflow: hidden;
+  border-radius: 14px; height: 140px; position: relative; overflow: hidden;
 }
 .modal-map::before {
   content: ''; position: absolute; inset: 0;
@@ -297,8 +340,7 @@ button { font-family: var(--font-d); cursor: pointer; border: none; background: 
     radial-gradient(circle at 70% 50%, rgba(124,58,237,.07) 0%, transparent 60%);
 }
 .modal-map-plane {
-  position: absolute; font-size: 20px;
-  top: 50%; left: 50%;
+  position: absolute; font-size: 20px; top: 50%; left: 50%;
   transform: translate(-50%,-50%);
   animation: floatPlane 3s ease-in-out infinite;
 }
@@ -307,8 +349,7 @@ button { font-family: var(--font-d); cursor: pointer; border: none; background: 
   50%      { transform: translate(-50%,-45%); }
 }
 .modal-map-label {
-  position: absolute; bottom: 10px; left: 50%;
-  transform: translateX(-50%);
+  position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
   font-size: 10px; color: var(--muted); letter-spacing: .5px; white-space: nowrap;
 }
 .heading-arrow {
@@ -327,10 +368,10 @@ button { font-family: var(--font-d); cursor: pointer; border: none; background: 
 .info-cell { background: var(--surface2); padding: 14px; }
 .info-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
 .info-value { font-family: var(--font-m); font-size: 15px; font-weight: 700; }
-.info-value.ok      { color: var(--green); }
-.info-value.accent  { color: var(--accent); }
-.info-value.warn    { color: var(--yellow); }
-.info-value.muted   { color: var(--muted); }
+.info-value.ok     { color: var(--green); }
+.info-value.accent { color: var(--accent); }
+.info-value.warn   { color: var(--yellow); }
+.info-value.muted  { color: var(--muted); }
 
 .modal-actions { display: flex; gap: 10px; padding: 0 20px 36px; }
 .modal-action {
@@ -338,7 +379,7 @@ button { font-family: var(--font-d); cursor: pointer; border: none; background: 
   border: 1px solid var(--border); background: var(--surface2);
   color: var(--text2); font-size: 11px; font-weight: 600;
   display: flex; flex-direction: column; align-items: center; gap: 5px;
-  transition: all .2s;
+  cursor: pointer; transition: all .2s;
 }
 .modal-action:active { transform: scale(.96); }
 .modal-action.primary {
@@ -347,18 +388,18 @@ button { font-family: var(--font-d); cursor: pointer; border: none; background: 
 }
 .modal-action-icon { font-size: 20px; }
 
-/* ── Toast ───────────────────────────────────────────────── */
+/* ── Toast ───────────────────────────────────────────────────── */
 .toast {
   position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px);
   background: var(--surface3); border: 1px solid var(--border2);
   color: var(--text); padding: 10px 20px; border-radius: 99px;
   font-size: 13px; font-weight: 600;
-  opacity: 0; pointer-events: none;
-  transition: all .3s; z-index: 200; white-space: nowrap;
+  opacity: 0; pointer-events: none; transition: all .3s;
+  z-index: 200; white-space: nowrap;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-/* ── Bottom Nav ──────────────────────────────────────────── */
+/* ── Navegación inferior ─────────────────────────────────────── */
 .bottom-nav {
   position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
   width: 100%; max-width: 430px;
@@ -368,61 +409,39 @@ button { font-family: var(--font-d); cursor: pointer; border: none; background: 
 }
 .nav-item {
   flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
-  color: var(--muted); font-size: 10px; font-weight: 600;
-  transition: color .2s;
+  color: var(--muted); font-size: 10px; font-weight: 600; transition: color .2s;
 }
 .nav-item:active { transform: scale(.9); }
 .nav-item.active { color: var(--accent); }
 .nav-icon { font-size: 22px; }
 
-/* ── Utility ─────────────────────────────────────────────── */
-.pb-nav { padding-bottom: 88px; }
-.text-green  { color: var(--green); }
-.text-yellow { color: var(--yellow); }
-.text-red    { color: var(--red); }
+/* ── Utilidades ─────────────────────────────────────────────── */
+.pb-nav    { padding-bottom: 88px; }
 .text-accent { color: var(--accent); }
 .text-muted  { color: var(--muted); }
 
-/* ── Skeleton Loading ────────────────────────────────────── */
+/* ── Skeleton ───────────────────────────────────────────────── */
 .skeleton {
   background: linear-gradient(90deg, var(--surface) 25%, var(--surface2) 50%, var(--surface) 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.6s infinite;
-  border-radius: 8px; height: 80px; margin-bottom: 10px;
+  background-size: 200% 100%; animation: shimmer 1.6s infinite;
+  border-radius: 0; height: 64px; margin-bottom: 1px;
 }
 @keyframes shimmer { to { background-position: -200% 0; } }
 
-/* ── States ──────────────────────────────────────────────── */
-.empty-state {
-  text-align: center; padding: 48px 24px; color: var(--muted);
-}
-.empty-icon { font-size: 44px; margin-bottom: 12px; opacity: .35; }
+/* ── Estados vacío/error ─────────────────────────────────────── */
+.empty-state { text-align: center; padding: 48px 24px; color: var(--muted); }
+.empty-icon  { font-size: 44px; margin-bottom: 12px; opacity: .35; }
 .empty-title { font-size: 15px; font-weight: 700; color: var(--text2); margin-bottom: 6px; }
 .empty-sub   { font-size: 13px; line-height: 1.5; }
 
 .error-state {
-  margin: 0 0 12px;
-  background: rgba(255,23,68,0.06);
-  border: 1px solid rgba(255,23,68,0.2);
-  border-radius: 12px; padding: 14px;
-  font-size: 13px; color: rgba(255,100,120,0.9); line-height: 1.5;
+  margin: 12px 20px;
+  background: rgba(255,23,68,0.06); border: 1px solid rgba(255,23,68,0.2);
+  border-radius: 12px; padding: 14px; font-size: 13px;
+  color: rgba(255,100,120,0.9); line-height: 1.5;
 }
 
-/* ── Animations ──────────────────────────────────────────── */
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(-8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.spin {
-  display: inline-block; width: 14px; height: 14px;
-  border: 2px solid var(--border2); border-top-color: var(--accent);
-  border-radius: 50%; animation: spin .7s linear infinite;
-  vertical-align: middle; margin-right: 6px;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ── Status badge ────────────────────────────────────────── */
+/* ── Badges ─────────────────────────────────────────────────── */
 .badge {
   display: inline-flex; align-items: center; gap: 4px;
   font-size: 10px; font-weight: 700; letter-spacing: .6px;
@@ -431,8 +450,27 @@ button { font-family: var(--font-d); cursor: pointer; border: none; background: 
 .badge.airborne  { background: rgba(0,230,118,.14); color: var(--green); }
 .badge.on_ground { background: rgba(90,96,112,.2);  color: var(--muted); }
 
-/* ── Responsive fine-tuning ──────────────────────────────── */
-@media (max-width: 375px) {
-  .modal-callsign { font-size: 24px; }
-  .tabs .tab      { font-size: 11px; }
+/* ── Spinner ────────────────────────────────────────────────── */
+.spin {
+  display: inline-block; width: 14px; height: 14px;
+  border: 2px solid var(--border2); border-top-color: var(--accent);
+  border-radius: 50%; animation: spin .7s linear infinite;
+  vertical-align: middle; margin-right: 6px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Animaciones ────────────────────────────────────────────── */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 360px) {
+  .board-thead,
+  .brow { grid-template-columns: 80px 1fr 40px 54px; }
+  .bcs  { font-size: 12px; }
+  .brt  { font-size: 12px; }
+  .modal-callsign { font-size: 22px; }
+  .tabs .tab { font-size: 11px; }
 }
