@@ -1,0 +1,438 @@
+/* ============================================================
+   AeroTrack — Stylesheet
+   ============================================================ */
+
+:root {
+  --bg:        #050810;
+  --surface:   #0d1220;
+  --surface2:  #131926;
+  --surface3:  #1a2133;
+  --border:    rgba(255,255,255,0.07);
+  --border2:   rgba(255,255,255,0.12);
+  --accent:    #00d4ff;
+  --accent2:   #7c3aed;
+  --green:     #00e676;
+  --yellow:    #ffd600;
+  --red:       #ff1744;
+  --orange:    #ff6d00;
+  --text:      #e8eaf0;
+  --text2:     #9aa0b0;
+  --muted:     #5a6070;
+  --font-d:    'Syne', sans-serif;
+  --font-m:    'Space Mono', monospace;
+  --radius:    18px;
+  --radius-sm: 10px;
+}
+
+/* ── Reset ──────────────────────────────────────────────── */
+*, *::before, *::after {
+  margin: 0; padding: 0; box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html { height: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-d);
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+button { font-family: var(--font-d); cursor: pointer; border: none; background: none; }
+
+/* ── Background Effects ──────────────────────────────────── */
+.bg-grid {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+.bg-glow {
+  position: fixed; top: -240px; left: 50%; transform: translateX(-50%);
+  width: 700px; height: 500px; pointer-events: none; z-index: 0;
+  background: radial-gradient(ellipse, rgba(0,212,255,0.07) 0%, transparent 70%);
+}
+
+/* ── Layout ─────────────────────────────────────────────── */
+.app {
+  position: relative; z-index: 1;
+  max-width: 430px; margin: 0 auto; min-height: 100dvh;
+}
+
+/* ── Header ─────────────────────────────────────────────── */
+.header {
+  padding: 52px 20px 12px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo-icon {
+  width: 34px; height: 34px; border-radius: 9px; font-size: 17px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex; align-items: center; justify-content: center;
+}
+.logo-text { font-size: 19px; font-weight: 800; letter-spacing: -.5px; }
+.header-right { display: flex; align-items: center; gap: 8px; }
+.api-badge {
+  font-size: 10px; font-weight: 700; letter-spacing: .5px;
+  padding: 3px 8px; border-radius: 20px;
+  background: rgba(0,230,118,0.12); color: var(--green);
+  border: 1px solid rgba(0,230,118,0.25);
+}
+.api-badge.anon {
+  background: rgba(255,214,0,0.12); color: var(--yellow);
+  border-color: rgba(255,214,0,0.25);
+}
+.icon-btn {
+  width: 36px; height: 36px; border-radius: 9px; font-size: 18px;
+  background: var(--surface2); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s; color: var(--text2);
+}
+.icon-btn:active { transform: scale(.9); }
+
+/* ── Search ─────────────────────────────────────────────── */
+.search-section { padding: 8px 20px 4px; }
+.search-bar {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 14px; padding: 0 14px;
+  transition: border-color .25s, box-shadow .25s;
+}
+.search-bar:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0,212,255,0.1);
+}
+.search-icon { color: var(--accent); font-size: 14px; }
+.search-input {
+  flex: 1; background: none; border: none; outline: none;
+  color: var(--text); font-family: var(--font-m); font-size: 14px;
+  padding: 14px 0; text-transform: uppercase; letter-spacing: 1.5px;
+}
+.search-input::placeholder {
+  color: var(--muted); text-transform: none;
+  font-family: var(--font-d); letter-spacing: 0; font-size: 14px;
+}
+.search-btn {
+  background: linear-gradient(135deg, var(--accent), #0099bb);
+  border-radius: 8px; color: #000; font-weight: 700;
+  font-size: 12px; padding: 8px 14px; transition: all .2s;
+  white-space: nowrap;
+}
+.search-btn:active { transform: scale(.95); }
+.search-btn:disabled { opacity: .5; cursor: not-allowed; }
+.search-hint { font-size: 10px; color: var(--muted); padding: 6px 14px 0; }
+
+/* ── Result Card ──────────────────────────────────────────── */
+.result-card {
+  margin: 12px 20px;
+  background: linear-gradient(135deg, rgba(0,212,255,0.06), rgba(124,58,237,0.06));
+  border: 1px solid rgba(0,212,255,0.25);
+  border-radius: var(--radius); padding: 16px;
+  animation: slideIn .3s ease;
+}
+.result-card .result-label {
+  font-size: 10px; color: var(--accent); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 6px;
+}
+.result-card .flight-num { font-family: var(--font-m); font-size: 22px; font-weight: 700; }
+.result-card .status-row { display: flex; align-items: center; gap: 10px; margin-top: 8px; flex-wrap: wrap; }
+.result-card .detail-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px;
+}
+.result-card .detail-item .label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; }
+.result-card .detail-item .value { font-family: var(--font-m); font-size: 14px; font-weight: 700; margin-top: 2px; }
+
+/* ── Airport Selector ────────────────────────────────────── */
+.airport-section { padding: 16px 0 4px; }
+.section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px 10px;
+}
+.section-title {
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 2px; color: var(--muted);
+}
+.live-pill {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 10px; font-weight: 700; color: var(--green);
+}
+.live-dot {
+  width: 6px; height: 6px; background: var(--green);
+  border-radius: 50%; animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: .5; transform: scale(.8); }
+}
+
+.airport-scroll {
+  display: flex; gap: 8px; padding: 0 20px;
+  overflow-x: auto; scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.airport-scroll::-webkit-scrollbar { display: none; }
+
+.airport-chip {
+  flex-shrink: 0; display: flex; flex-direction: column; align-items: center;
+  gap: 3px; padding: 10px 14px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 12px; cursor: pointer; transition: all .2s;
+  min-width: 72px;
+}
+.airport-chip:active { transform: scale(.95); }
+.airport-chip.active {
+  background: rgba(0,212,255,0.1);
+  border-color: var(--accent);
+}
+.airport-chip .code {
+  font-family: var(--font-m); font-size: 14px; font-weight: 700; color: var(--text);
+}
+.airport-chip .city { font-size: 9px; color: var(--muted); white-space: nowrap; }
+
+/* ── Tabs ────────────────────────────────────────────────── */
+.tabs {
+  display: flex; gap: 6px; padding: 12px 20px 8px;
+}
+.tab {
+  flex: 1; padding: 9px 4px; border-radius: var(--radius-sm);
+  font-size: 12px; font-weight: 600;
+  border: 1px solid var(--border); color: var(--muted);
+  background: transparent; transition: all .2s;
+}
+.tab:active { transform: scale(.97); }
+.tab.active { background: var(--accent); color: #000; border-color: var(--accent); }
+
+/* ── Flight List ─────────────────────────────────────────── */
+.flight-list-section { padding: 4px 20px; }
+
+/* ── Flight Row Card ─────────────────────────────────────── */
+.flight-row {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden;
+  margin-bottom: 10px; cursor: pointer; position: relative;
+  transition: border-color .2s, transform .15s;
+}
+.flight-row::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; border-radius: var(--radius) 0 0 var(--radius);
+}
+.flight-row.airborne::before  { background: var(--green); }
+.flight-row.on_ground::before { background: var(--muted); }
+.flight-row.unknown::before   { background: var(--border2); }
+.flight-row:active { transform: scale(.985); border-color: var(--border2); }
+
+.flight-row-inner { padding: 14px 16px; }
+.flight-row-top {
+  display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px;
+}
+.flight-callsign { font-family: var(--font-m); font-size: 18px; font-weight: 700; }
+.flight-country  { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+.flight-status-badge {
+  font-size: 9px; font-weight: 700; letter-spacing: .8px;
+  padding: 3px 8px; border-radius: 20px; text-transform: uppercase;
+}
+.flight-status-badge.airborne  { background: rgba(0,230,118,0.15); color: var(--green); }
+.flight-status-badge.on_ground { background: rgba(90,96,112,0.2); color: var(--muted); }
+
+.flight-row-stats {
+  display: flex; gap: 16px; flex-wrap: wrap;
+}
+.stat-item { display: flex; flex-direction: column; gap: 2px; }
+.stat-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: .8px; }
+.stat-value { font-family: var(--font-m); font-size: 13px; font-weight: 700; }
+.stat-value.accent { color: var(--accent); }
+
+/* ── Modal ───────────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(5,8,16,.88); backdrop-filter: blur(10px);
+  opacity: 0; pointer-events: none; transition: opacity .3s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+
+.modal {
+  position: fixed; bottom: 0; left: 50%;
+  transform: translateX(-50%) translateY(100%);
+  width: 100%; max-width: 430px; z-index: 101;
+  background: var(--surface);
+  border-radius: 24px 24px 0 0;
+  border-top: 1px solid var(--border2);
+  transition: transform .35s cubic-bezier(.32,.72,0,1);
+  max-height: 90dvh; overflow-y: auto;
+}
+.modal.open { transform: translateX(-50%) translateY(0); }
+
+.modal-drag-handle {
+  width: 40px; height: 4px; background: var(--border2);
+  border-radius: 99px; margin: 12px auto 0;
+}
+
+.modal-header   { padding: 16px 20px 0; }
+.modal-close-row { display: flex; justify-content: flex-end; margin-bottom: 4px; }
+.modal-close {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--surface2); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 14px; color: var(--muted);
+}
+
+.modal-callsign { font-family: var(--font-m); font-size: 28px; font-weight: 700; }
+.modal-sub      { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+.modal-map {
+  margin: 16px 20px;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 14px; height: 160px; position: relative; overflow: hidden;
+}
+.modal-map::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 30% 50%, rgba(0,212,255,.07) 0%, transparent 60%),
+    radial-gradient(circle at 70% 50%, rgba(124,58,237,.07) 0%, transparent 60%);
+}
+.modal-map-plane {
+  position: absolute; font-size: 20px;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  animation: floatPlane 3s ease-in-out infinite;
+}
+@keyframes floatPlane {
+  0%,100% { transform: translate(-50%,-55%); }
+  50%      { transform: translate(-50%,-45%); }
+}
+.modal-map-label {
+  position: absolute; bottom: 10px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px; color: var(--muted); letter-spacing: .5px; white-space: nowrap;
+}
+.heading-arrow {
+  position: absolute; top: 12px; right: 12px;
+  width: 32px; height: 32px;
+  background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.2);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+
+.info-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--border);
+  margin: 0 20px 16px; border-radius: 14px; overflow: hidden;
+}
+.info-cell { background: var(--surface2); padding: 14px; }
+.info-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+.info-value { font-family: var(--font-m); font-size: 15px; font-weight: 700; }
+.info-value.ok      { color: var(--green); }
+.info-value.accent  { color: var(--accent); }
+.info-value.warn    { color: var(--yellow); }
+.info-value.muted   { color: var(--muted); }
+
+.modal-actions { display: flex; gap: 10px; padding: 0 20px 36px; }
+.modal-action {
+  flex: 1; padding: 13px 8px; border-radius: 12px;
+  border: 1px solid var(--border); background: var(--surface2);
+  color: var(--text2); font-size: 11px; font-weight: 600;
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  transition: all .2s;
+}
+.modal-action:active { transform: scale(.96); }
+.modal-action.primary {
+  background: linear-gradient(135deg, rgba(0,212,255,.12), rgba(124,58,237,.12));
+  border-color: rgba(0,212,255,.3); color: var(--accent);
+}
+.modal-action-icon { font-size: 20px; }
+
+/* ── Toast ───────────────────────────────────────────────── */
+.toast {
+  position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: var(--surface3); border: 1px solid var(--border2);
+  color: var(--text); padding: 10px 20px; border-radius: 99px;
+  font-size: 13px; font-weight: 600;
+  opacity: 0; pointer-events: none;
+  transition: all .3s; z-index: 200; white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── Bottom Nav ──────────────────────────────────────────── */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 430px;
+  background: rgba(5,8,16,.96); backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  display: flex; padding: 10px 0 22px; z-index: 50;
+}
+.nav-item {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+  color: var(--muted); font-size: 10px; font-weight: 600;
+  transition: color .2s;
+}
+.nav-item:active { transform: scale(.9); }
+.nav-item.active { color: var(--accent); }
+.nav-icon { font-size: 22px; }
+
+/* ── Utility ─────────────────────────────────────────────── */
+.pb-nav { padding-bottom: 88px; }
+.text-green  { color: var(--green); }
+.text-yellow { color: var(--yellow); }
+.text-red    { color: var(--red); }
+.text-accent { color: var(--accent); }
+.text-muted  { color: var(--muted); }
+
+/* ── Skeleton Loading ────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, var(--surface) 25%, var(--surface2) 50%, var(--surface) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite;
+  border-radius: 8px; height: 80px; margin-bottom: 10px;
+}
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+/* ── States ──────────────────────────────────────────────── */
+.empty-state {
+  text-align: center; padding: 48px 24px; color: var(--muted);
+}
+.empty-icon { font-size: 44px; margin-bottom: 12px; opacity: .35; }
+.empty-title { font-size: 15px; font-weight: 700; color: var(--text2); margin-bottom: 6px; }
+.empty-sub   { font-size: 13px; line-height: 1.5; }
+
+.error-state {
+  margin: 0 0 12px;
+  background: rgba(255,23,68,0.06);
+  border: 1px solid rgba(255,23,68,0.2);
+  border-radius: 12px; padding: 14px;
+  font-size: 13px; color: rgba(255,100,120,0.9); line-height: 1.5;
+}
+
+/* ── Animations ──────────────────────────────────────────── */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.spin {
+  display: inline-block; width: 14px; height: 14px;
+  border: 2px solid var(--border2); border-top-color: var(--accent);
+  border-radius: 50%; animation: spin .7s linear infinite;
+  vertical-align: middle; margin-right: 6px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Status badge ────────────────────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10px; font-weight: 700; letter-spacing: .6px;
+  padding: 3px 9px; border-radius: 99px; text-transform: uppercase;
+}
+.badge.airborne  { background: rgba(0,230,118,.14); color: var(--green); }
+.badge.on_ground { background: rgba(90,96,112,.2);  color: var(--muted); }
+
+/* ── Responsive fine-tuning ──────────────────────────────── */
+@media (max-width: 375px) {
+  .modal-callsign { font-size: 24px; }
+  .tabs .tab      { font-size: 11px; }
+}
